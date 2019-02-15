@@ -1,0 +1,15 @@
+<?php
+
+namespace DummyNamespace;
+
+use Telkins\Validation\AbstractRule;
+
+class DummyClass extends AbstractFieldRuleSet
+{
+	protected function rules() : array
+	{
+		return [
+			// ...
+		];
+	}
+}

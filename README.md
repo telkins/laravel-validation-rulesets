@@ -1,9 +1,9 @@
-# Very short description of the package
+# A simple way to keep your Laravel validation rules a bit more DRY.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
-[![Build Status](https://img.shields.io/travis/spatie/:package_name/master.svg?style=flat-square)](https://travis-ci.org/spatie/:package_name)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/:package_name.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/:package_name)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/telkins/laravel-validation-rulesets.svg?style=flat-square)](https://packagist.org/packages/telkins/laravel-validation-rulesets)
+[![Build Status](https://img.shields.io/travis/telkins/laravel-validation-rulesets/master.svg?style=flat-square)](https://travis-ci.org/telkins/laravel-validation-rulesets)
+[![Quality Score](https://img.shields.io/scrutinizer/g/telkins/laravel-validation-rulesets.svg?style=flat-square)](https://scrutinizer-ci.com/g/telkins/laravel-validation-rulesets)
+[![Total Downloads](https://img.shields.io/packagist/dt/telkins/laravel-validation-rulesets.svg?style=flat-square)](https://packagist.org/packages/telkins/laravel-validation-rulesets)
 
 
 This is where your description should go. Try and limit it to a paragraph or two.
@@ -13,14 +13,65 @@ This is where your description should go. Try and limit it to a paragraph or two
 You can install the package via composer:
 
 ```bash
-composer require spatie/:package_name
+composer require telkins/laravel-validation-rulesets
 ```
 
-## Usage
+## Field Rule Sets
+
+### Making a new field rule set
+
+The package includes an artisan command to create a new field rule set.
+
+```bash
+php artisan make:field-rule-set NewEmail
+```
+
+This field rule set will have the `App\Rules\FieldRuleSets` namespace and will be saved in `app/Rules/FieldRuleSets`.
+
+You can also indicate a custom namespace like `App\MyFieldRules`, for example:
+
+```bash
+php artisan make:rule-set MyFieldRules/NewEmail
+```
+
+This field rule set will have the `App\MyFieldRules` namespace and will be saved in `app/MyFieldRules`.
+
+### Usage
+
+To use a field rule set in a form request:
 
 ``` php
-$skeleton = new Spatie\Skeleton();
-echo $skeleton->echoPhrase('Hello, Spatie!');
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    return [
+        'email_address' => new EmailAddressRuleSet(),
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ];
+}
+```
+
+To use a field rule set in a form request where it might require the whole request data context:
+
+``` php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    return [
+        'email_address' => new EmailAddressRuleSet($this->all()),
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ];
+}
 ```
 
 ### Testing
@@ -37,29 +88,10 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-### Security
-
-If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
-
-## Postcardware
-
-You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
-
-Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
-
-We publish all received postcards [on our company website](https://spatie.be/en/opensource/postcards).
-
 ## Credits
 
 - [Travis Elkins](https://github.com/telkins)
 - [All Contributors](../../contributors)
-
-## Support us
-
-Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
-
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
-All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
 
