@@ -4,7 +4,6 @@ namespace Telkins\Validation\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Telkins\Validation\Console\Commands\MakeFieldRuleSet;
-use Telkins\Validation\Console\Commands\MakeResourceRuleSet;
 
 class RuleSetsServiceProvider extends ServiceProvider
 {
@@ -13,7 +12,6 @@ class RuleSetsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MakeFieldRuleSet::class,
-                MakeResourceRuleSet::class,
             ]);
         }
     }
