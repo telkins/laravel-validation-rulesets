@@ -1,35 +1,35 @@
 {
-    "name": "spatie/:package_name",
+    "name": "telkins/laravel-validation-rulesets",
     "description": "A simple way to keep your Laravel validation rules a bit more DRY.",
     "keywords": [
-        "spatie",
-        ":package_name"
+        "telkins",
+        "laravel-validation-rulesets"
     ],
-    "homepage": "https://github.com/spatie/:package_name",
+    "homepage": "https://github.com/telkins/laravel-validation-rulesets",
     "license": "MIT",
     "authors": [
         {
             "name": "Travis Elkins",
             "email": "travis.elkins+github@gmail.com",
-            "homepage": "https://spatie.be",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "illuminate/support": "~5.5|~5.6|~5.7"
     },
     "require-dev": {
-        "larapack/dd": "^1.0",
-        "phpunit/phpunit": "^7.0"
+        "orchestra/testbench": "~3.5|~3.6|~3.7",
+        "phpunit/phpunit": "^7.3"
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
+            "Telkins\\Validation\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "Telkins\\Validation\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -43,10 +43,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "Telkins\\Validation\\Providers\\RuleSetsServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "Skeleton": "Telkins\\Validation\\SkeletonFacade"
             }
         }
     }
