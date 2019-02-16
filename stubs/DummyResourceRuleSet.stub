@@ -1,0 +1,29 @@
+<?php
+
+namespace DummyNamespace;
+
+use Telkins\Validation\ResourceRuleSets\AbstractResourceRuleSet;
+
+class DummyClass extends AbstractResourceRuleSet
+{
+	protected function provideRules() : array
+	{
+		return [
+			// ...
+		];
+	}
+
+	protected function provideCreationRules() : array
+	{
+		return [
+			// ...
+		];
+	}
+
+	protected function provideUpdateRules() : array
+	{
+		return [
+			// ...
+		];
+	}
+}
