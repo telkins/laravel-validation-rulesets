@@ -24,6 +24,12 @@ composer require telkins/laravel-validation-rulesets
 
 ## Field Rule Sets
 
+A field rule set is a intended to be a validation rule object that can be applied or used for validating a single field or attribute.  It's similar to Laravel's validation objects that implement `Illuminate\Contracts\Validation\Rule`.  The main difference is that these field rule sets allow a user to list one or more validation rules in a set that will be applied to the field or attribute.  The code itself is inspired by Juampi Barreto's medium.com article, ["Laravel 5.5 validation ruleception (rule inside rule)"](https://medium.com/@juampi92/laravel-5-5-validation-ruleception-rule-inside-rule-2762d2cf4471).
+
+Many times the same handful of validation rules need to be applied to a given field, like an email address or a password or something.  It's certainly easy enough to enter `'required|email|max:255`' each time it's needed.  It's also possible to create a validation rule that simply implements `Illuminate\Contracts\Validation\Rule`, but this requires writing all of the various validation code oneself, even though it's already there in the Laravel framework.
+
+So, now one can simply create a new field rule set, and then provide the various validation rules that should apply.  This class is now quite portable and reusable as well as easily testable.
+
 ### Making a new field rule set
 
 The package includes an artisan command to create a new field rule set.
@@ -37,16 +43,51 @@ This field rule set will have the `App\Rules\FieldRuleSets` namespace and will b
 You can also indicate a custom namespace like `App\MyFieldRules`, for example:
 
 ```bash
-php artisan make:rule-set MyFieldRules/NewEmail
+php artisan make:field-rule-set MyFieldRules/NewEmail
 ```
 
 This field rule set will have the `App\MyFieldRules` namespace and will be saved in `app/MyFieldRules`.
+
+In any case, you should wind up with a file that looks similar to this:
+
+```php
+<?php
+
+namespace App\Rules\FieldRuleSets;
+
+use Telkins\Validation\AbstractFieldRuleSet;
+
+class NewEmail extends AbstractFieldRuleSet
+{
+    public function rules() : array
+    {
+        return [
+            // ...
+        ];
+    }
+}
+```
+
+One simply fills in the various validation rules that should be used to apply to field when used.  For example:
+
+```php
+public function rules() : array
+{
+    return [
+        'required',
+        'email',
+        'max:255',
+    ];
+}
+```
+
+One can also use other field rule sets, any object that implements `Illuminate\Contracts\Validation\Rule`, or closures.  The only thing one must remember to do is to keep each rule as its own element in the array.
 
 ### Usage
 
 To use a field rule set in a form request:
 
-``` php
+```php
 /**
  * Get the validation rules that apply to the request.
  *
@@ -64,7 +105,7 @@ public function rules()
 
 To use a field rule set in a form request where it might require the whole request data context:
 
-``` php
+```php
 /**
  * Get the validation rules that apply to the request.
  *
@@ -80,9 +121,11 @@ public function rules()
 }
 ```
 
+This is necessary when applying validation rules that require the greater context of the request that needs to be validated.  For example, if you wish to use the `confirmed` validation rule, then the object needs to be able to access *all* of the request attributes and their values.  Simply pass that data into the constructor.
+
 ### Testing
 
-``` bash
+```bash
 composer test
 ```
 
