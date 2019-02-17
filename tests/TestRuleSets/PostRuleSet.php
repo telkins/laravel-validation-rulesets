@@ -29,8 +29,6 @@ class PostRuleSet extends AbstractResourceRuleSet
             'subject' => [
                 'required',
             ],
-            // 'body' => [
-            // ],
         ];
     }
 
