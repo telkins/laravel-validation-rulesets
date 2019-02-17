@@ -24,7 +24,7 @@ composer require telkins/laravel-validation-rulesets
 
 ## Field Rule Sets
 
-A field rule set is a intended to be a validation rule object that can be applied or used for validating a single field or attribute.  It's similar to Laravel's validation objects that implement `Illuminate\Contracts\Validation\Rule`.  The main difference is that these field rule sets allow a user to list one or more validation rules in a set that will be applied to the field or attribute.  The code itself is inspired by [Juampi Barreto's](https://github.com/juampi92) medium.com article, ["Laravel 5.5 validation ruleception (rule inside rule)"](https://medium.com/@juampi92/laravel-5-5-validation-ruleception-rule-inside-rule-2762d2cf4471).
+A field rule set is intended to be a validation rule object that can be applied or used for validating a single field or attribute.  It's similar to Laravel's validation objects that implement `Illuminate\Contracts\Validation\Rule`.  The main difference is that these field rule sets allow a user to list one or more validation rules in a set that will be applied to the field or attribute.  The code itself is inspired by [Juampi Barreto's](https://github.com/juampi92) medium.com article, ["Laravel 5.5 validation ruleception (rule inside rule)"](https://medium.com/@juampi92/laravel-5-5-validation-ruleception-rule-inside-rule-2762d2cf4471).
 
 Many times the same handful of validation rules need to be applied to a given field, like an email address or a password or something.  It's certainly easy enough to enter `'required|email|max:255`' each time it's needed.  It's also possible to create a validation rule that simply implements `Illuminate\Contracts\Validation\Rule`, but this requires writing all of the various validation code oneself, even though it's already there in the Laravel framework.
 
@@ -68,7 +68,7 @@ class NewEmail extends AbstractFieldRuleSet
 }
 ```
 
-One simply fills in the various validation rules that should be used to apply to field when used.  For example:
+One simply fills in the various validation rules that should be used to validate the field to which they are applied.  For example:
 
 ```php
 public function rules() : array
@@ -122,6 +122,154 @@ public function rules()
 ```
 
 This is necessary when applying validation rules that require the greater context of the request that needs to be validated.  For example, if you wish to use the `confirmed` validation rule, then the object needs to be able to access *all* of the request attributes and their values.  Simply pass that data into the constructor.
+
+## Resource Rule Sets
+
+A resource rule set is intended to encapsulate all of the rules that go into validating a new or updated resource.  It is a collection of attributes and the various rules that should be applied to them in order to validate them.  The resource rule set takes some inspiration from Laravel Nova's validation in that they allow users to define "common" rules, creation rules, and update rules.  Creation rules and update rules merge in any "common" rules that might be defined.
+
+### Making a new resource rule set
+
+The package includes an artisan command to create a new resource rule set.
+
+```bash
+php artisan make:resource-rule-set BlogPost
+```
+
+This resource rule set will have the `App\Rules\ResourceRuleSets` namespace and will be saved in `app/Rules/ResourceRuleSets`.
+
+You can also indicate a custom namespace like `App\MyResourceRules`, for example:
+
+```bash
+php artisan make:resource-rule-set MyResourceRules/BlogPost
+```
+
+This resource rule set will have the `App\MyResourceRules` namespace and will be saved in `app/MyResourceRules`.
+
+In any case, you should wind up with a file that looks similar to this:
+
+```php
+<?php
+
+namespace App\Rules\ResourceRuleSets;
+
+use Telkins\Validation\AbstractResourceRuleSet;
+
+class BlogPost extends AbstractResourceRuleSet
+{
+    /**
+     * Provide rules that should be applied during creation and updating. If
+     * empty, then this method can be removed.
+     *
+     * @return array
+     */
+    protected function provideRules() : array
+    {
+        return [
+            // ...
+        ];
+    }
+
+    /**
+     * Provide rules that should be applied only during creation. If empty,
+     * then this method can be removed.
+     *
+     * @return array
+     */
+    protected function provideCreationRules() : array
+    {
+        return [
+            // ...
+        ];
+    }
+
+    /**
+     * Provide rules that should be applied only during updating. If empty,
+     * then this method can be removed.
+     *
+     * @return array
+     */
+    protected function provideUpdateRules() : array
+    {
+        return [
+            // ...
+        ];
+    }
+}
+```
+
+One simply fills in the various validation rules for the specific resource.  For example:
+
+```php
+protected function provideRules() : array
+{
+    return [
+        'subject' => [
+            'string',
+            'max:255',
+        ],
+        'body' => [
+            'string',
+            'max:1024',
+        ],
+    ];
+}
+
+protected function provideCreationRules() : array
+{
+    return [
+        'author_id' => [
+            'required',
+        ],
+        'subject' => [
+            'required',
+        ],
+    ];
+}
+
+protected function provideUpdateRules() : array
+{
+    return [
+        'reason' => [
+            'required',
+            'string',
+            'max:255',
+        ],
+    ];
+}
+```
+
+One can also use field rule sets, any object that implements `Illuminate\Contracts\Validation\Rule`, or closures.  The only thing one must remember to do is to keep each rule as its own element in the arrays.
+
+### Usage
+
+To return the resource rule set's "common" rules:
+```php
+(new BlogPost())->rules();
+```
+
+To return the resource rule set's creation rules:
+```php
+(new BlogPost())->creationRules();
+```
+
+To return the resource rule set's update rules:
+```php
+(new BlogPost())->updateRules();
+```
+
+To use a resource rule set in a form request that handles storing a new blog post:
+
+```php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    return (new BlogPost())->creationRules();
+}
+```
 
 ### Testing
 
