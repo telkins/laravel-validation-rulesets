@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use Telkins\Validation\AbstractRule;
+use Telkins\Validation\AbstractFieldRuleSet;
 
 class DummyClass extends AbstractFieldRuleSet
 {
