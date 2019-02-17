@@ -2,7 +2,6 @@
 
 namespace Telkins\Validation;
 
-use Illuminate\Support\Str;
 use Telkins\Validation\Contracts\ResourceRuleSetContract;
 
 abstract class AbstractResourceRuleSet implements ResourceRuleSetContract
@@ -28,9 +27,18 @@ abstract class AbstractResourceRuleSet implements ResourceRuleSetContract
         );
     }
 
-    abstract protected function provideRules() : array;
+    protected function provideRules() : array
+    {
+        return [];
+    }
 
-    abstract protected function provideCreationRules() : array;
+    protected function provideCreationRules() : array
+    {
+        return [];
+    }
 
-    abstract protected function provideUpdateRules() : array;
+    protected function provideUpdateRules() : array
+    {
+        return [];
+    }
 }

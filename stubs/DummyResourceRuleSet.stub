@@ -2,10 +2,16 @@
 
 namespace DummyNamespace;
 
-use Telkins\Validation\ResourceRuleSets\AbstractResourceRuleSet;
+use Telkins\Validation\AbstractResourceRuleSet;
 
 class DummyClass extends AbstractResourceRuleSet
 {
+    /**
+     * Provide rules that should be applied during creation and updating. If
+     * empty, then this method can be removed.
+     *
+     * @return array
+     */
     protected function provideRules() : array
     {
         return [
@@ -13,6 +19,12 @@ class DummyClass extends AbstractResourceRuleSet
         ];
     }
 
+    /**
+     * Provide rules that should be applied only during creation. If empty,
+     * then this method can be removed.
+     *
+     * @return array
+     */
     protected function provideCreationRules() : array
     {
         return [
@@ -20,6 +32,12 @@ class DummyClass extends AbstractResourceRuleSet
         ];
     }
 
+    /**
+     * Provide rules that should be applied only during updating. If empty,
+     * then this method can be removed.
+     *
+     * @return array
+     */
     protected function provideUpdateRules() : array
     {
         return [
