@@ -6,10 +6,10 @@ use Telkins\Validation\AbstractFieldRuleSet;
 
 class DummyClass extends AbstractFieldRuleSet
 {
-	protected function rules() : array
-	{
-		return [
-			// ...
-		];
-	}
+    public function rules() : array
+    {
+        return [
+            // ...
+        ];
+    }
 }
