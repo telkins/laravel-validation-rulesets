@@ -96,7 +96,7 @@ To use a field rule set in a form request:
 public function rules()
 {
     return [
-        'email_address' => new EmailAddressRuleSet(),
+        'email_address' => [new EmailAddressRuleSet()],
         'subject' => 'required|string|max:255',
         'message' => 'required|string',
     ];
@@ -114,7 +114,7 @@ To use a field rule set in a form request where it might require the whole reque
 public function rules()
 {
     return [
-        'email_address' => new EmailAddressRuleSet($this->all()),
+        'email_address' => [new EmailAddressRuleSet($this->all())],
         'subject' => 'required|string|max:255',
         'message' => 'required|string',
     ];
