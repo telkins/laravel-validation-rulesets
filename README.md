@@ -102,7 +102,7 @@ When applying rules alongside field rule sets that might use one or more of thes
 * Make the field rule set class implement `Illuminate\Contracts\Validation\ImplicitRule`.  This does nothing other than indicate to Laravel's validator that it is, in fact, an implicit rule.
 * Instead of using implicit rules *within* a field rule set, remove it and have it alongside the object.
 
-For example, this field rule set is now implicit:
+For example, this field rule set uses `required` and indicates to Laravel's validator that it is implicit by way of the `ImplicitRule` interface:
 ```php
 <?php
 
@@ -113,11 +113,18 @@ use Illuminate\Contracts\Validation\ImplicitRule;
 
 class EmailRuleSet extends AbstractFieldRuleSet implements ImplicitRule
 {
-    // ...
+    public function rules() : array
+    {
+        return [
+            'required',
+            'email',
+            'max:255',
+        ];
+    }
 }
 ```
 
-The alternative is to *not* use `Illuminate\Contracts\Validation\ImplicitRule` and instead use the implicit rule *alongside* the field rule set object, like so:
+The alternative is to *not* use `required` *nor* `Illuminate\Contracts\Validation\ImplicitRule` within the field rule set and instead use the implicit rule *alongside* the field rule set object whenever it's used.  Here is how its usage might look from within a form request:
 
 ```php
 /**
