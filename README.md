@@ -35,7 +35,7 @@ So, now one can simply create a new field rule set, and then provide the various
 The package includes an artisan command to create a new field rule set.
 
 ```bash
-php artisan make:field-rule-set NewEmail
+php artisan make:field-rule-set EmailRuleSet
 ```
 
 This field rule set will have the `App\Rules\FieldRuleSets` namespace and will be saved in `app/Rules/FieldRuleSets`.
@@ -43,7 +43,7 @@ This field rule set will have the `App\Rules\FieldRuleSets` namespace and will b
 You can also indicate a custom namespace like `App\MyFieldRules`, for example:
 
 ```bash
-php artisan make:field-rule-set MyFieldRules/NewEmail
+php artisan make:field-rule-set MyFieldRules/EmailRuleSet
 ```
 
 This field rule set will have the `App\MyFieldRules` namespace and will be saved in `app/MyFieldRules`.
@@ -57,7 +57,7 @@ namespace App\Rules\FieldRuleSets;
 
 use Telkins\Validation\AbstractFieldRuleSet;
 
-class NewEmail extends AbstractFieldRuleSet
+class EmailRuleSet extends AbstractFieldRuleSet
 {
     public function rules() : array
     {
@@ -74,7 +74,6 @@ One simply fills in the various validation rules that should be used to validate
 public function rules() : array
 {
     return [
-        'required',
         'email',
         'max:255',
     ];
@@ -82,6 +81,58 @@ public function rules() : array
 ```
 
 One can also use other field rule sets, any object that implements `Illuminate\Contracts\Validation\Rule`, or closures.  The only thing one must remember to do is to keep each rule as its own element in the array.
+
+### Implicit rules
+
+According to [Laravel's documentation on using implicit extensions](https://laravel.com/docs/5.7/validation#using-extensions), "For a rule to run even when an attribute is empty, the rule must imply that the attribute is required."  Out of the box, the following code shows us which rules Laravel considers implicit:
+
+```php
+/**
+ * The validation rules that imply the field is required.
+ *
+ * @var array
+ */
+protected $implicitRules = [
+    'Required', 'Filled', 'RequiredWith', 'RequiredWithAll', 'RequiredWithout',
+    'RequiredWithoutAll', 'RequiredIf', 'RequiredUnless', 'Accepted', 'Present',
+];
+```
+
+When applying rules alongside field rule sets that might use one or more of these implicit rules, one of two solutions exist:
+* Make the field rule set class implement `Illuminate\Contracts\Validation\ImplicitRule`.  This does nothing other than indicate to Laravel's validator that it is, in fact, an implicit rule.
+* Instead of using implicit rules *within* a field rule set, remove it and have it alongside the object.
+
+For example, this field rule set is now implicit:
+```php
+<?php
+
+namespace App\Rules\FieldRuleSets;
+
+use Telkins\Validation\AbstractFieldRuleSet;
+use Illuminate\Contracts\Validation\ImplicitRule;
+
+class EmailRuleSet extends AbstractFieldRuleSet implements ImplicitRule
+{
+    // ...
+}
+```
+
+The alternative is to *not* use `Illuminate\Contracts\Validation\ImplicitRule` and instead use the implicit rule *alongside* the field rule set object, like so:
+
+```php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    return [
+        'email_address' => ['required', new EmailAddressRuleSet()],
+        // ...
+    ];
+}
+```
 
 ### Usage
 
