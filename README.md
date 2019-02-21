@@ -181,6 +181,24 @@ public function rules()
 
 This is necessary when applying validation rules that require the greater context of the request that needs to be validated.  For example, if you wish to use the `confirmed` validation rule, then the object needs to be able to access *all* of the request attributes and their values.  Simply pass that data into the constructor.
 
+To use a field rule set *except* for one or more of the rules:
+```php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    return [
+        'email_address' => [(new EmailAddressRuleSet())->except('required')],
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ];
+}
+```
+
+
 ## Resource Rule Sets
 
 A resource rule set is intended to encapsulate all of the rules that go into validating a new or updated resource.  It is a collection of attributes and the various rules that should be applied to them in order to validate them.  The resource rule set takes some inspiration from Laravel Nova's validation in that they allow users to define "common" rules, creation rules, and update rules.  Creation rules and update rules merge in any "common" rules that might be defined.
