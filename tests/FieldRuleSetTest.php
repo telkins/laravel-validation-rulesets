@@ -44,6 +44,18 @@ class FieldRuleSetTest extends TestCase
         $this->assertEquals($this->getError($errorKey, $attribute, $extra), $rule->message());
     }
 
+    /**
+     * @test
+     */
+    public function it_can_use_a_rule_set_except_certain_rules()
+    {
+        $attribute = 'email_address';
+
+        $rule = (new NewEmailRuleSet)->except('required', 'email');
+
+        $this->assertTrue($rule->passes($attribute, null));
+    }
+
     public function providesInvalidValues()
     {
         return [

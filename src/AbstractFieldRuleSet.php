@@ -13,11 +13,26 @@ abstract class AbstractFieldRuleSet implements Rule, FieldRuleSetContract
 {
     protected $data = [];
 
+    protected $except = [];
+
     protected $validator;
 
     public function __construct(array $data = [])
     {
         $this->data = $data;
+    }
+
+    /**
+     * Use the rule set without the specified rules.
+     *
+     * @param mixed $rules
+     * @return self
+     */
+    public function except($rules): self
+    {
+        $this->except = ! is_array($rules) ? func_get_args() : $rules;
+
+        return $this;
     }
 
     /**
@@ -43,15 +58,31 @@ abstract class AbstractFieldRuleSet implements Rule, FieldRuleSetContract
      */
     protected function validate($value, $rules, $name = 'variable')
     {
-        if (!is_string($rules) && !is_array($rules)) {
-            $rules = [$rules];
-        }
+        $rules = $this->prepareRules($rules);
 
         $data = empty($this->data) ? [$name => $value] : $this->data;
 
         $this->validator = Validator::make($data, [$name => $rules]);
 
         return $this->validator->passes();
+    }
+
+    /**
+     * Prepare the rules.
+     *
+     * @param  mixed $rules
+     * @return array
+     */
+    protected function prepareRules($rules): array
+    {
+        if (!is_string($rules) && !is_array($rules)) {
+            $rules = [$rules];
+        }
+
+        return collect($rules)
+            ->reject(function ($rule) {
+                return in_array($rule, $this->except);
+            })->toArray();
     }
 
     /**
@@ -66,7 +97,7 @@ abstract class AbstractFieldRuleSet implements Rule, FieldRuleSetContract
         if ($errors->any()) {
             return $errors->first();
         }
-        
+
         return 'The :attribute is not valid.';
     }
 }
