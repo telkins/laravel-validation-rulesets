@@ -1,0 +1,16 @@
+<?php
+
+namespace DummyNamespace;
+
+use Telkins\Validation\AbstractFieldRuleSet;
+use Illuminate\Contracts\Validation\ImplicitRule;
+
+class DummyClass extends AbstractFieldRuleSet implements ImplicitRule
+{
+    public function rules() : array
+    {
+        return [
+            // ...
+        ];
+    }
+}

@@ -2,6 +2,8 @@
 
 namespace Telkins\Validation\Console\Commands;
 
+use Symfony\Component\Console\Input\InputOption;
+
 class MakeFieldRuleSet extends AbstractMakeRuleSet
 {
     /**
@@ -25,5 +27,24 @@ class MakeFieldRuleSet extends AbstractMakeRuleSet
      */
     protected $type = 'FieldRuleSet';
 
-    protected $stub = __DIR__ . '/../../../stubs/DummyFieldRuleSet.stub';
+    protected function getOptions()
+    {
+        return array_merge([
+            ['implicit', null, InputOption::VALUE_NONE, 'Have the new class implement Illuminate\Contracts\Validation\ImplicitRule'],
+        ], parent::getOptions());
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        if ($this->hasOption('implicit')) {
+            return __DIR__ . '/../../../stubs/DummyImplicitFieldRuleSet.stub';
+        }
+
+        return __DIR__ . '/../../../stubs/DummyFieldRuleSet.stub';
+    }
 }

@@ -124,6 +124,12 @@ class EmailRuleSet extends AbstractFieldRuleSet implements ImplicitRule
 }
 ```
 
+One can use the following artisan command, with the `implicit` option, in order to create a new field rule set that implements `Illuminate\Contracts\Validation\ImplicitRule`:
+
+```bash
+php artisan make:field-rule-set EmailRuleSet --implicit
+```
+
 The alternative is to *not* use `required` *nor* `Illuminate\Contracts\Validation\ImplicitRule` within the field rule set and instead use the implicit rule *alongside* the field rule set object whenever it's used.  Here is how its usage might look from within a form request:
 
 ```php
