@@ -99,7 +99,7 @@ protected $implicitRules = [
 ```
 
 When there is a need to use one or more of these implicit rules with field rule sets, there are two ways to do so:
-* Make the field rule set class implement `Illuminate\Contracts\Validation\ImplicitRule`.  This does nothing other than indicate to Laravel's validator that it is, in fact, an implicit rule.
+* Use the implicit rule(s) *within* the field rule set, but be sure to make the field rule set class implement `Illuminate\Contracts\Validation\ImplicitRule`.  This simply indicates to Laravel's validator that it is, in fact, an implicit rule.
 * Instead of using implicit rules *within* a field rule set, remove it and have it alongside the object.
 
 For example, this field rule set uses `required` and indicates to Laravel's validator that it is implicit by way of the `ImplicitRule` interface:
