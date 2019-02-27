@@ -7,7 +7,7 @@ use Telkins\Validation\Providers\RuleSetsServiceProvider;
 
 class TestCase extends OrchestraTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
