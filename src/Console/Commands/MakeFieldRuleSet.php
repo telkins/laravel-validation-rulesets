@@ -41,7 +41,7 @@ class MakeFieldRuleSet extends AbstractMakeRuleSet
      */
     protected function getStub()
     {
-        if ($this->hasOption('implicit')) {
+        if ($this->option('implicit')) {
             return __DIR__ . '/../../../stubs/DummyImplicitFieldRuleSet.stub';
         }
 
