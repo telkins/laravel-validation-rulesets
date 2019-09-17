@@ -19,7 +19,7 @@ class MakeResourceRuleSetCommandTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
 
-        $this->assertContains('ResourceRuleSet created successfully.', Artisan::output());
+        $this->assertStringContainsString('ResourceRuleSet created successfully.', Artisan::output());
 
         $shouldOutputFilePath = $this->app['path'] . '/Rules/ResourceRuleSets/PostRuleSet.php';
 
@@ -27,9 +27,9 @@ class MakeResourceRuleSetCommandTest extends TestCase
 
         $contents = File::get($shouldOutputFilePath);
 
-        $this->assertContains('namespace App\Rules\ResourceRuleSets;', $contents);
+        $this->assertStringContainsString('namespace App\Rules\ResourceRuleSets;', $contents);
 
-        $this->assertContains('class PostRuleSet extends AbstractResourceRuleSet', $contents);
+        $this->assertStringContainsString('class PostRuleSet extends AbstractResourceRuleSet', $contents);
     }
 
     /**
@@ -44,7 +44,7 @@ class MakeResourceRuleSetCommandTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
 
-        $this->assertContains('ResourceRuleSet created successfully.', Artisan::output());
+        $this->assertStringContainsString('ResourceRuleSet created successfully.', Artisan::output());
 
         $shouldOutputFilePath = $this->app['path'] . '/MyResourceRuleSets/PostRuleSet.php';
 
@@ -52,8 +52,8 @@ class MakeResourceRuleSetCommandTest extends TestCase
 
         $contents = File::get($shouldOutputFilePath);
 
-        $this->assertContains('namespace App\MyResourceRuleSets;', $contents);
+        $this->assertStringContainsString('namespace App\MyResourceRuleSets;', $contents);
 
-        $this->assertContains('class PostRuleSet extends AbstractResourceRuleSet', $contents);
+        $this->assertStringContainsString('class PostRuleSet extends AbstractResourceRuleSet', $contents);
     }
 }

@@ -19,7 +19,7 @@ class MakeFieldRuleSetCommandTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
 
-        $this->assertContains('FieldRuleSet created successfully.', Artisan::output());
+        $this->assertStringContainsString('FieldRuleSet created successfully.', Artisan::output());
 
         $shouldOutputFilePath = $this->app['path'] . '/Rules/FieldRuleSets/EmailRuleSet.php';
 
@@ -27,9 +27,9 @@ class MakeFieldRuleSetCommandTest extends TestCase
 
         $contents = File::get($shouldOutputFilePath);
 
-        $this->assertContains('namespace App\Rules\FieldRuleSets;', $contents);
+        $this->assertStringContainsString('namespace App\Rules\FieldRuleSets;', $contents);
 
-        $this->assertContains('class EmailRuleSet extends AbstractFieldRuleSet', $contents);
+        $this->assertStringContainsString('class EmailRuleSet extends AbstractFieldRuleSet', $contents);
     }
 
     /**
@@ -45,7 +45,7 @@ class MakeFieldRuleSetCommandTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
 
-        $this->assertContains('FieldRuleSet created successfully.', Artisan::output());
+        $this->assertStringContainsString('FieldRuleSet created successfully.', Artisan::output());
 
         $shouldOutputFilePath = $this->app['path'] . '/Rules/FieldRuleSets/EmailRuleSet.php';
 
@@ -53,11 +53,11 @@ class MakeFieldRuleSetCommandTest extends TestCase
 
         $contents = File::get($shouldOutputFilePath);
 
-        $this->assertContains('namespace App\Rules\FieldRuleSets;', $contents);
+        $this->assertStringContainsString('namespace App\Rules\FieldRuleSets;', $contents);
 
-        $this->assertContains('use Illuminate\Contracts\Validation\ImplicitRule;', $contents);
+        $this->assertStringContainsString('use Illuminate\Contracts\Validation\ImplicitRule;', $contents);
 
-        $this->assertContains('class EmailRuleSet extends AbstractFieldRuleSet implements ImplicitRule', $contents);
+        $this->assertStringContainsString('class EmailRuleSet extends AbstractFieldRuleSet implements ImplicitRule', $contents);
     }
 
     /**
@@ -72,7 +72,7 @@ class MakeFieldRuleSetCommandTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
 
-        $this->assertContains('FieldRuleSet created successfully.', Artisan::output());
+        $this->assertStringContainsString('FieldRuleSet created successfully.', Artisan::output());
 
         $shouldOutputFilePath = $this->app['path'] . '/MyFieldRuleSets/EmailRuleSet.php';
 
@@ -80,8 +80,8 @@ class MakeFieldRuleSetCommandTest extends TestCase
 
         $contents = File::get($shouldOutputFilePath);
 
-        $this->assertContains('namespace App\MyFieldRuleSets;', $contents);
+        $this->assertStringContainsString('namespace App\MyFieldRuleSets;', $contents);
 
-        $this->assertContains('class EmailRuleSet extends AbstractFieldRuleSet', $contents);
+        $this->assertStringContainsString('class EmailRuleSet extends AbstractFieldRuleSet', $contents);
     }
 }
