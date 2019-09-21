@@ -8,7 +8,7 @@
 
 This package provides a relatively simple way to organize, reuse, and DRY up your Laravel validation rules.  It was put together after working with Laravel for quite some time and specifically while building an API that also uses Laravel Nova to manage resources.  There was a need to provide validation on the Laravel Nova side of things on a field-by-field basis.  Then, on the API side of things, there was also a need to provide those same validation rules.  These could be on a field-by-field basis or by resource.
 
-So, by using this package, one can create two kinds of reusable rule sets.  The first kind of rule set is what is referred to as a field rule set.  A field rule set is a class implements the `Illuminate\Contracts\Validation\Rule` interface.  It can contain any number of Laravel's validation rules, as well as any other rule that implements `Illuminate\Contracts\Validation\Rule`.
+So, by using this package, one can create two kinds of reusable rule sets.  The first kind of rule set is what is referred to as a field rule set.  A field rule set is a class that implements the `Illuminate\Contracts\Validation\Rule` interface.  It can contain any number of Laravel's validation rules, as well as any other rule that implements `Illuminate\Contracts\Validation\Rule`.
 
 The second kind of rule set is what is referred to as a resource rule set.  This doesn't really have any direct relationship to anything that currently exists within Laravel.  Rather, it's a convenient way to group rules for a given resource.  It provides rules common to updating and creating as well as creation- and update-specific rules.  This is quite similar to how Laravel Nova behaves with individual fields.  Currently, the creation and update rules merge in any common rules, again, in the same way that Laravel Nova does with resource fields.
 
@@ -351,6 +351,21 @@ public function rules()
 {
     return (new BlogPost())->creationRules();
 }
+```
+
+To return the resource rule set's "common" rules for an individual field:
+```php
+(new BlogPost())->fieldRules('subject');
+```
+
+To return the resource rule set's creation rules for an individual field:
+```php
+(new BlogPost())->fieldCreationRules('subject');
+```
+
+To return the resource rule set's update rules for an individual field:
+```php
+(new BlogPost())->fieldUpdateRules('subject');
 ```
 
 ### Testing
