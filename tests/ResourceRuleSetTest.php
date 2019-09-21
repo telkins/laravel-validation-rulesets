@@ -2,6 +2,7 @@
 
 namespace Telkins\Validation\Tests;
 
+use OutOfBoundsException;
 use Illuminate\Support\Facades\Validator;
 use Telkins\Validation\Tests\TestRuleSets\PostRuleSet;
 
@@ -219,5 +220,78 @@ class ResourceRuleSetTest extends TestCase
                 ['max' => 255],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_expected_field_rules()
+    {
+        $rules = (new PostRuleSet())->fieldRules('subject');
+
+        $this->assertIsArray($rules);
+        $this->assertEquals($rules, [
+            'string',
+            'max:255',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_expected_field_creation_rules()
+    {
+        $rules = (new PostRuleSet())->fieldCreationRules('subject');
+
+        $this->assertIsArray($rules);
+        $this->assertEquals($rules, [
+            'string',
+            'max:255',
+            'required',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_expected_field_update_rules()
+    {
+        $rules = (new PostRuleSet())->fieldUpdateRules('subject');
+
+        $this->assertIsArray($rules);
+        $this->assertEquals($rules, [
+            'string',
+            'max:255',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_asking_for_an_invalid_fields_rules()
+    {
+        $this->expectException(OutOfBoundsException::class);
+
+        (new PostRuleSet())->fieldRules('invalid.field');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_asking_for_an_invalid_fields_creation_rules()
+    {
+        $this->expectException(OutOfBoundsException::class);
+
+        (new PostRuleSet())->fieldCreationRules('invalid.field');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_asking_for_an_invalid_fields_update_rules()
+    {
+        $this->expectException(OutOfBoundsException::class);
+
+        (new PostRuleSet())->fieldUpdateRules('invalid.field');
     }
 }
