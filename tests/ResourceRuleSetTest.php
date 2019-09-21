@@ -46,9 +46,9 @@ class ResourceRuleSetTest extends TestCase
                 'required',
             ],
             'subject' => [
+                'required',
                 'string',
                 'max:255',
-                'required',
             ],
             'body' => [
                 'string',
@@ -245,9 +245,9 @@ class ResourceRuleSetTest extends TestCase
 
         $this->assertIsArray($rules);
         $this->assertEquals($rules, [
+            'required',
             'string',
             'max:255',
-            'required',
         ]);
     }
 

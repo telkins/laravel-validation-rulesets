@@ -15,16 +15,16 @@ abstract class AbstractResourceRuleSet implements ResourceRuleSetContract
     public function creationRules() : array
     {
         return array_merge_recursive(
-            $this->provideRules(),
-            $this->provideCreationRules()
+            $this->provideCreationRules(),
+            $this->provideRules()
         );
     }
 
     public function updateRules() : array
     {
         return array_merge_recursive(
-            $this->provideRules(),
-            $this->provideUpdateRules()
+            $this->provideUpdateRules(),
+            $this->provideRules()
         );
     }
 
