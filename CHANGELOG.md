@@ -1,7 +1,13 @@
 # Changelog
 
-All notable changes to `:package_name` will be documented in this file
+All notable changes to this package will be documented in this file
 
-## 1.0.0 - 201X-XX-XX
+## 0.2.0 - 2020-03-04
 
-- initial release
+### Added
+
+- Laravel 7.0 support
+
+### Removed
+
+- pre-Laravel 6.0 support
