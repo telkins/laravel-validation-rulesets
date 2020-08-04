@@ -227,7 +227,7 @@ class ResourceRuleSetTest extends TestCase
      */
     public function it_returns_the_expected_field_rules()
     {
-        $rules = (new PostRuleSet())->fieldRules('subject');
+        $rules = (new PostRuleSet())->rules('subject');
 
         $this->assertIsArray($rules);
         $this->assertEquals($rules, [
@@ -241,7 +241,7 @@ class ResourceRuleSetTest extends TestCase
      */
     public function it_returns_the_expected_field_creation_rules()
     {
-        $rules = (new PostRuleSet())->fieldCreationRules('subject');
+        $rules = (new PostRuleSet())->creationRules('subject');
 
         $this->assertIsArray($rules);
         $this->assertEquals($rules, [
@@ -256,7 +256,7 @@ class ResourceRuleSetTest extends TestCase
      */
     public function it_returns_the_expected_field_update_rules()
     {
-        $rules = (new PostRuleSet())->fieldUpdateRules('subject');
+        $rules = (new PostRuleSet())->updateRules('subject');
 
         $this->assertIsArray($rules);
         $this->assertEquals($rules, [
@@ -272,7 +272,7 @@ class ResourceRuleSetTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
 
-        (new PostRuleSet())->fieldRules('invalid.field');
+        (new PostRuleSet())->rules('invalid.field');
     }
 
     /**
@@ -282,7 +282,7 @@ class ResourceRuleSetTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
 
-        (new PostRuleSet())->fieldCreationRules('invalid.field');
+        (new PostRuleSet())->creationRules('invalid.field');
     }
 
     /**
@@ -292,6 +292,6 @@ class ResourceRuleSetTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
 
-        (new PostRuleSet())->fieldUpdateRules('invalid.field');
+        (new PostRuleSet())->updateRules('invalid.field');
     }
 }

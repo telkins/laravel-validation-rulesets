@@ -4,7 +4,7 @@ namespace Telkins\Validation\Contracts;
 
 interface ResourceRuleSetContract
 {
-    public function rules() : array;
-    public function creationRules() : array;
-    public function updateRules() : array;
+    public function rules(?string $key = null) : array;
+    public function creationRules(?string $key = null) : array;
+    public function updateRules(?string $key = null) : array;
 }

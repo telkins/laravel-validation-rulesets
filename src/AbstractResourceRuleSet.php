@@ -7,53 +7,47 @@ use Telkins\Validation\Contracts\ResourceRuleSetContract;
 
 abstract class AbstractResourceRuleSet implements ResourceRuleSetContract
 {
-    public function rules() : array
+    public function rules(?string $key = null) : array
     {
-        return $this->provideRules();
+        return $this->getRules($this->provideRules(), $key);
     }
 
-    public function creationRules() : array
+    public function creationRules(?string $key = null) : array
     {
-        return array_merge_recursive(
+        return $this->getRules(array_merge_recursive(
             $this->provideCreationRules(),
             $this->provideRules(),
-        );
+        ), $key);
     }
 
-    public function updateRules() : array
+    public function updateRules(?string $key = null) : array
     {
-        return array_merge_recursive(
+        return $this->getRules(array_merge_recursive(
             $this->provideUpdateRules(),
             $this->provideRules(),
-        );
+        ), $key);
     }
 
-    public function fieldRules(string $field) : array
+    protected function getRules(array $rules, ?string $key) : array
     {
-        return $this->getFieldRules($field, $this->rules());
+        if (null === $key) {
+            return $rules;
+        }
+
+        return $this->getRulesForKey($rules, $key);
     }
 
-    public function fieldCreationRules(string $field) : array
+    protected function getRulesForKey(array $rules, string $key) : array
     {
-        return $this->getFieldRules($field, $this->creationRules());
+        $this->guardAgainstInvalidKey($key, $rules);
+
+        return $rules[$key];
     }
 
-    public function fieldUpdateRules(string $field) : array
+    protected function guardAgainstInvalidKey(string $key, array $rules)
     {
-        return $this->getFieldRules($field, $this->updateRules());
-    }
-
-    protected function getFieldRules(string $field, array $rules) : array
-    {
-        $this->guardAgainstInvalidField($field, $rules);
-
-        return $rules[$field];
-    }
-
-    protected function guardAgainstInvalidField(string $field, array $rules)
-    {
-        if (! array_key_exists($field, $rules)) {
-            throw new OutOfBoundsException("invalid field, '{$field}'");
+        if (! array_key_exists($key, $rules)) {
+            throw new OutOfBoundsException("invalid key, '{$key}'");
         }
     }
 

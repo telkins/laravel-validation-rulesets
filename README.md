@@ -355,17 +355,17 @@ public function rules()
 
 To return the resource rule set's "common" rules for an individual field:
 ```php
-(new BlogPost())->fieldRules('subject');
+(new BlogPost())->rules('subject');
 ```
 
 To return the resource rule set's creation rules for an individual field:
 ```php
-(new BlogPost())->fieldCreationRules('subject');
+(new BlogPost())->creationRules('subject');
 ```
 
 To return the resource rule set's update rules for an individual field:
 ```php
-(new BlogPost())->fieldUpdateRules('subject');
+(new BlogPost())->updateRules('subject');
 ```
 
 ### Testing
