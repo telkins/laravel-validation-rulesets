@@ -110,7 +110,7 @@ class ResourceRuleSetTest extends TestCase
         $this->assertEquals($this->getError($errorKey, $errorAttribute, $extra), $validator->errors()->first());
     }
 
-    public function providesInvalidCreationData()
+    public static function providesInvalidCreationData()
     {
         return [
             [
@@ -181,7 +181,7 @@ class ResourceRuleSetTest extends TestCase
         $this->assertEquals($this->getError($errorKey, $errorAttribute, $extra), $validator->errors()->first());
     }
 
-    public function providesInvalidUpdateData()
+    public static function providesInvalidUpdateData()
     {
         return [
             [

@@ -56,7 +56,7 @@ class FieldRuleSetTest extends TestCase
         $this->assertTrue($rule->passes($attribute, null));
     }
 
-    public function providesInvalidValues()
+    public static function providesInvalidValues()
     {
         return [
             [
